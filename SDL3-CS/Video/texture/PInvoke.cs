@@ -19,6 +19,19 @@ public static partial class SDL
         return null;
     }
 
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateTexture(IntPtr render, SDL.PixelFormat format, SDL.TextureAccess access, int w, int h);
+
+    public static Texture? CreateTexture(SDL.Render render, SDL.PixelFormat format, SDL.TextureAccess textureAccess, int w, int h)
+    {
+        var ptr = SDL_CreateTexture(render.Handle, format, textureAccess, w, h);
+
+        if (ptr != IntPtr.Zero)
+            return new Texture(ptr);
+
+        return null;
+    }
+
     //extern SDL_DECLSPEC bool SDLCALL SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
